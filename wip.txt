@@ -1,0 +1,12 @@
+# RESTful web services
+
+Social media application
+
+Retrieve all user - GET /users
+Create a user     - POST /users
+Retrieve one user - GET /users/{id} -> /users/1
+Delete a user     - DELETE /users/{id} => /users/1
+
+Retrieve all posts for a User - GET /users/{id}/posts
+Create a posts for a User     - POST /users/{id}/post
+Retrive details of a post     - GET /users/{id}/posts/{post_id}
