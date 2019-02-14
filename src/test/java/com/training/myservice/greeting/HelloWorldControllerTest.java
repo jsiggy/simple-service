@@ -15,4 +15,14 @@ public class HelloWorldControllerTest {
     public void helloWorldBeanReturnHelloWorldBean() {
         assertEquals(new HelloWorldBean("Hi, John"), new HelloWorldController().helloWorldBean());
     }
+
+    @Test
+    public void helloWorldNameReturnsTheName() {
+        assertEquals(new HelloWorldBean("Hello John"), new HelloWorldController().helloWorldPathVariableExample("John"));
+    }
+
+    @Test
+    public void helloWordNameDefaultsToWorld() {
+        assertEquals(new HelloWorldBean("Hello World"), new HelloWorldController().helloWorldPathVariableExample(null));
+    }
 }
