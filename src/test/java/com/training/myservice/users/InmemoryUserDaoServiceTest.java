@@ -18,7 +18,7 @@ public class InmemoryUserDaoServiceTest {
     private User charles;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         bruce = new User("Bruce Lee", createBirthdate(1940, NOVEMBER, 27));
         chuck = new User("Chuck Norris", createBirthdate(1940, MARCH, 10));
         charles = new User("Charles Darwin", createBirthdate(1882, APRIL, 19));
@@ -69,7 +69,7 @@ public class InmemoryUserDaoServiceTest {
     public void canRetrieveAUser() {
         addSomeUsers();
 
-        final User actualUser = userDaoService.findOne(2);
+        final User actualUser = userDaoService.find(2);
 
         assertEquals("Chuck Norris", actualUser.getName());
     }
@@ -81,7 +81,7 @@ public class InmemoryUserDaoServiceTest {
         userDaoService.remove(1);
 
         assertEquals(2, userDaoService.size());
-        assertNull(userDaoService.findOne(1));
+        assertNull(userDaoService.find(1));
     }
 
     private void addSomeUsers() {

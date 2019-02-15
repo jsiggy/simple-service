@@ -15,7 +15,7 @@ public class InmemoryUserDaoService {
         return users;
     }
 
-    public User findOne(int id) {
+    public User find(int id) {
         for (User user : users) {
             if (user.getId() == id)
                 return user;
@@ -32,11 +32,7 @@ public class InmemoryUserDaoService {
     }
 
     public void remove(int id) {
-        for (int i = 0; i < users.size(); i++) {
-            User user =  users.get(i);
-            if (user.getId() == id)
-                users.remove(i);
-        }
+        users.removeIf(u -> u.getId() == id);
     }
 
     public int size() {
