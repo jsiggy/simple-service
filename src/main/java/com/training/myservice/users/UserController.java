@@ -1,8 +1,11 @@
 package com.training.myservice.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,7 +25,13 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public void createUser(@RequestBody User user) {
-        userService.save(user);
+    public ResponseEntity<Object> createUser(@RequestBody User user) {
+        final User newUser = userService.save(user);
+
+        final URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newUser.getId()).toUri();
+        return ResponseEntity.created(location).build();
     }
 }

@@ -1,20 +1,18 @@
 package com.training.myservice.users;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
-@Getter @Setter @EqualsAndHashCode @ToString
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class User {
     private Integer id;
     private String name;
     private Date birthdate;
-
-    User() {
-    }
 
     public User(String name, Date birthdate) {
         this(null, name, birthdate);

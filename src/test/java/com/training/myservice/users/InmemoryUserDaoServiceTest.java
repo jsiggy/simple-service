@@ -12,9 +12,9 @@ import static org.junit.Assert.*;
 
 public class InmemoryUserDaoServiceTest {
 
+    private InmemoryUserDaoService userDaoService;
     private User bruce;
     private User chuck;
-    private InmemoryUserDaoService userDaoService;
     private User charles;
 
     @Before
