@@ -4,7 +4,7 @@ import lombok.*;
 
 import java.util.Date;
 
-@NoArgsConstructor @Getter @Setter @EqualsAndHashCode @ToString
+@NoArgsConstructor @Getter @Setter @EqualsAndHashCode @ToString @Builder
 public class User {
     private Integer id;
     private String name;
