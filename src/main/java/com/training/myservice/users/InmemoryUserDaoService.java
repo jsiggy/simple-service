@@ -25,7 +25,7 @@ public class InmemoryUserDaoService {
 
     public User save(User user) {
         if (user.getId() == null) {
-            user.setId(users.size()+1);
+            user.setId(users.size() + 1);
         }
         users.add(user);
         return user;
