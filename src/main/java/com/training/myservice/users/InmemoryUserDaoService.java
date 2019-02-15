@@ -4,19 +4,12 @@ package com.training.myservice.users;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Component
 public class InmemoryUserDaoService {
 
     private final List<User> users = new ArrayList<>();
-
-    public InmemoryUserDaoService() {
-        users.add(new User(1, "Adam", new Date()));
-        users.add(new User(2, "Eve", new Date()));
-        users.add(new User(3, "Jack", new Date()));
-    }
 
     public List<User> findAll() {
         return users;
@@ -44,5 +37,9 @@ public class InmemoryUserDaoService {
             if (user.getId() == id)
                 users.remove(i);
         }
+    }
+
+    public int size() {
+        return users.size();
     }
 }
