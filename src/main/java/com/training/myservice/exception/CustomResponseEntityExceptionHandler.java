@@ -1,7 +1,10 @@
 package com.training.myservice.exception;
 
 import com.training.myservice.users.UserNotFoundException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,8 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Date;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 @RestController
@@ -19,15 +21,21 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> defaultExceptionHandler(Exception ex, WebRequest request) {
-        return new ResponseEntity<>(createExceptionResponse(ex, request), INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(createExceptionResponse(request.getDescription(false), ex), INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public final ResponseEntity<Object> handleUserNotFOundException(UserNotFoundException ex, WebRequest request) {
-        return new ResponseEntity<>(createExceptionResponse(ex, request), NOT_FOUND);
+        return new ResponseEntity<>(createExceptionResponse(request.getDescription(false), ex), NOT_FOUND);
     }
 
-    private ExceptionResponse createExceptionResponse(Exception ex, WebRequest request) {
-        return new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        final ExceptionResponse exceptionResponse = createExceptionResponse("Validation Failed", ex);
+        return new ResponseEntity<>(exceptionResponse, BAD_REQUEST);
+    }
+
+    private ExceptionResponse createExceptionResponse(String description, Exception ex) {
+        return new ExceptionResponse(new Date(), description, ex.getMessage());
     }
 }

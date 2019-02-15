@@ -8,6 +8,7 @@ import java.util.Date;
 
 @NoArgsConstructor @Getter @Setter @EqualsAndHashCode @ToString @Builder
 public class User {
+
     private Integer id;
     @Size(min = 2)
     private String name;
