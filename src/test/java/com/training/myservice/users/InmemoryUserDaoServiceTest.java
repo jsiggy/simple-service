@@ -84,6 +84,22 @@ public class InmemoryUserDaoServiceTest {
         assertNull(userDaoService.find(1));
     }
 
+    @Test
+    public void shouldReturnTrueIfUserCanBeRemoved() {
+        userDaoService.save(bruce);
+
+        final boolean wasUserRemoved = userDaoService.remove(1);
+
+        assertTrue(wasUserRemoved);
+    }
+
+    @Test
+    public void shouldReturnFalseIfUserCannotBeRemoved() {
+        final boolean wasUserRemoved = userDaoService.remove(10);
+
+        assertFalse(wasUserRemoved);
+    }
+
     private void addSomeUsers() {
         userDaoService.save(bruce);
         userDaoService.save(chuck);

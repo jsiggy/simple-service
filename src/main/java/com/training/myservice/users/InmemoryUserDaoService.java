@@ -31,8 +31,8 @@ public class InmemoryUserDaoService {
         return user;
     }
 
-    public void remove(int id) {
-        users.removeIf(u -> u.getId() == id);
+    public boolean remove(int id) {
+        return users.removeIf(u -> u.getId() == id);
     }
 
     public int size() {
