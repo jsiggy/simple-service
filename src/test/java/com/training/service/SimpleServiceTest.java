@@ -12,6 +12,4 @@ public class SimpleServiceTest {
 	@Test
 	public void contextLoads() {
 	}
-
-
 }
