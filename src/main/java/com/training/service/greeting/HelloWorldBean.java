@@ -1,4 +1,4 @@
-package com.training.myservice.greeting;
+package com.training.service.greeting;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.training.myservice.users;
+package com.training.service.users;
 
 import lombok.*;
 

@@ -1,6 +1,6 @@
-package com.training.myservice.exception;
+package com.training.service.exception;
 
-import com.training.myservice.users.UserNotFoundException;
+import com.training.service.users.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

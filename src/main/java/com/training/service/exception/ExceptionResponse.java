@@ -1,4 +1,4 @@
-package com.training.myservice.exception;
+package com.training.service.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
