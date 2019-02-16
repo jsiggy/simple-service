@@ -13,7 +13,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private InmemoryUserDaoService userService;
+    private InmemoryUserRepositoryService userService;
 
     @GetMapping("/users")
     public List<User> retrieveAllUsers() {

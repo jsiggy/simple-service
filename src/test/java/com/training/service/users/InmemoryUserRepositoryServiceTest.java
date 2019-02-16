@@ -10,9 +10,9 @@ import java.util.List;
 import static java.util.Calendar.*;
 import static org.junit.Assert.*;
 
-public class InmemoryUserDaoServiceTest {
+public class InmemoryUserRepositoryServiceTest {
 
-    private InmemoryUserDaoService userDaoService;
+    private InmemoryUserRepositoryService userDaoService;
     private User bruce;
     private User chuck;
     private User charles;
@@ -22,7 +22,7 @@ public class InmemoryUserDaoServiceTest {
         bruce = new User("Bruce Lee", createBirthdate(1940, NOVEMBER, 27));
         chuck = new User("Chuck Norris", createBirthdate(1940, MARCH, 10));
         charles = new User("Charles Darwin", createBirthdate(1882, APRIL, 19));
-        userDaoService = new InmemoryUserDaoService();
+        userDaoService = new InmemoryUserRepositoryService();
     }
 
     @Test

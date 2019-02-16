@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class InmemoryUserDaoService {
+public class InmemoryUserRepositoryService {
 
     private final List<User> users = new ArrayList<>();
 
