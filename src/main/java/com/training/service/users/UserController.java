@@ -1,9 +1,10 @@
 package com.training.service.users;
 
+import lombok.AccessLevel;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -14,6 +15,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Setter(AccessLevel.PACKAGE)
+    private LocationUriCreator uriCreator = new LocationUriCreator();
 
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -36,10 +40,7 @@ public class UserController {
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
         final User newUser = userRepository.save(user);
 
-        final URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(newUser.getId()).toUri();
+        final URI location = uriCreator.getUserLocationUri(newUser);
         return ResponseEntity.created(location).build();
     }
 

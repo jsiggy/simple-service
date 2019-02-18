@@ -1,12 +1,12 @@
 package com.training.service.users;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,24 +21,27 @@ import static org.mockito.Mockito.when;
 public class UserControllerTest {
 
     @Mock UserRepository userRepository;
+    @Mock LocationUriCreator locationUriCreator;
 
     private User newton;
     private User einstein;
+    private UserController userController;
 
     @Before
     public void setUp() {
+        userController = new UserController(userRepository);
+        userController.setUriCreator(locationUriCreator);
+
         newton = new User.UserBuilder().id(1l)
                 .name("Isaac Newton")
                 .birthdate(createBirthdate(1643, JANUARY, 4)).build();
         einstein = new User.UserBuilder()
                 .name("Albert Einstein")
                 .birthdate(createBirthdate(1879, MARCH, 14)).build();
-
     }
 
     @Test
     public void retrieveAllShouldUseUserRepositoryFindAll() {
-        final UserController userController = new UserController(userRepository);
         when(userRepository.findAll()).thenReturn(Arrays.asList(newton, einstein));
 
         userController.retrieveAllUsers();
@@ -48,7 +51,6 @@ public class UserControllerTest {
 
     @Test
     public void retrieveAllShouldGetAllUsersInTheRepository() {
-        final UserController userController = new UserController(userRepository);
         when(userRepository.findAll()).thenReturn(Arrays.asList(newton, einstein));
 
         final List<User> users = userController.retrieveAllUsers();
@@ -58,7 +60,6 @@ public class UserControllerTest {
 
     @Test
     public void retrieveAllShouldNotFailWhenZeroUsers() {
-        final UserController userController = new UserController(userRepository);
 
         final List<User> users = userController.retrieveAllUsers();
 
@@ -68,7 +69,6 @@ public class UserControllerTest {
     @Test
     public void retrieveUserShouldUseUserRepositoryFind() {
         long id = newton.getId();
-        final UserController userController = new UserController(userRepository);
         when(userRepository.find(id)).thenReturn(newton);
 
         userController.retrieveUser(id);
@@ -79,18 +79,15 @@ public class UserControllerTest {
     @Test(expected = UserNotFoundException.class)
     public void shouldThrowUserNotFoundWhenNoSuchUserId() {
         long id = newton.getId();
-        final UserController userController = new UserController(userRepository);
         when(userRepository.find(id)).thenReturn(null);
 
         userController.retrieveUser(id);
     }
 
     @Test
-    @Ignore("Need to mock the static methods that find the HttpRequest of createUser")
-    public void shouldAskUserRepoToSaveAUser() {
-        final UserController userController = new UserController(userRepository);
+    public void shouldAskUserRepoToSaveAUser() throws Exception {
         when(userRepository.save(newton)).thenReturn(newton);
-        // need to mock
+        when(locationUriCreator.getUserLocationUri(newton)).thenReturn(new URI("http://localhost"));
 
         userController.createUser(newton);
 
@@ -100,7 +97,6 @@ public class UserControllerTest {
     @Test
     public void shouldUseUserRepositoryToDeleteAnExistingUser() {
         long id = newton.getId();
-        final UserController userController = new UserController(userRepository);
         when(userRepository.remove(id)).thenReturn(true);
 
         userController.deleteUser(id);
@@ -111,7 +107,6 @@ public class UserControllerTest {
     @Test(expected = UserNotFoundException.class)
     public void shouldThrowUserNotFoundWhenTryingtoDeleteANonExistingUser() {
         long id = newton.getId();
-        final UserController userController = new UserController(userRepository);
         when(userRepository.remove(id)).thenReturn(false);
 
         userController.deleteUser(id);
