@@ -1,12 +1,10 @@
 package com.training.service.greeting;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-@EqualsAndHashCode @ToString
+@NoArgsConstructor @EqualsAndHashCode @ToString
 public class HelloWorldBean {
-    @Getter
+    @Getter @Setter
     private String message;
 
     public HelloWorldBean(String message) {
