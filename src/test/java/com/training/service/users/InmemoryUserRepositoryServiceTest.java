@@ -3,36 +3,42 @@ package com.training.service.users;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
+import static com.training.service.users.UserTestUtil.createBirthdate;
 import static java.util.Calendar.*;
 import static org.junit.Assert.*;
 
 public class InmemoryUserRepositoryServiceTest {
 
-    private InmemoryUserRepositoryService userDaoService;
+    private UserRepository userRepository;
     private User bruce;
     private User chuck;
     private User charles;
+    private User einstein;
 
     @Before
     public void setUp() {
-        bruce = new User("Bruce Lee", createBirthdate(1940, NOVEMBER, 27));
-        chuck = new User("Chuck Norris", createBirthdate(1940, MARCH, 10));
-        charles = new User("Charles Darwin", createBirthdate(1882, APRIL, 19));
-        userDaoService = new InmemoryUserRepositoryService();
+        bruce = new User.UserBuilder().name("Bruce Lee")
+                .birthdate(createBirthdate(1940, NOVEMBER, 27)).build();
+        chuck = new User.UserBuilder().name("Chuck Norris")
+                .birthdate(createBirthdate(1940, MARCH, 10)).build();
+        charles = new User.UserBuilder().name("Charles Darwin")
+                .birthdate(createBirthdate(1882, APRIL, 19)).build();
+        einstein = new User.UserBuilder().name("Albert Einstein")
+                .birthdate(createBirthdate(1879, MARCH, 14)).build();
+
+        userRepository = new InmemoryUserRepositoryService();
     }
 
     @Test
     public void shouldInitializeAsEmpty() {
-        assertEquals(0, userDaoService.size());
+        assertEquals(0, userRepository.size());
     }
 
     @Test
     public void canSaveAUser() {
-        User actualNewUser = userDaoService.save(bruce);
+        User actualNewUser = userRepository.save(bruce);
 
         assertEquals(bruce, actualNewUser);
     }
@@ -41,14 +47,14 @@ public class InmemoryUserRepositoryServiceTest {
     public void canSaveMultipleUsers() {
         addSomeUsers();
 
-        assertEquals(3, userDaoService.size());
+        assertEquals(4, userRepository.size());
     }
 
     @Test
     public void shouldCreateNewUserWithAnId() {
         assertNull(bruce.getId());
 
-        User actualNewUser = userDaoService.save(bruce);
+        User actualNewUser = userRepository.save(bruce);
 
         assertNotNull(actualNewUser.getId());
     }
@@ -57,19 +63,20 @@ public class InmemoryUserRepositoryServiceTest {
     public void canRetrieveAllUsers() {
         addSomeUsers();
 
-        final List<User> users = userDaoService.findAll();
+        final List<User> users = userRepository.findAll();
 
-        assertEquals(3, users.size());
+        assertEquals(4, users.size());
         assertEquals("Bruce Lee", users.get(0).getName());
         assertEquals("Chuck Norris", users.get(1).getName());
         assertEquals("Charles Darwin", users.get(2).getName());
+        assertEquals("Albert Einstein", users.get(3).getName());
     }
 
     @Test
     public void canRetrieveAUser() {
         addSomeUsers();
 
-        final User actualUser = userDaoService.find(2);
+        final User actualUser = userRepository.find(2);
 
         assertEquals("Chuck Norris", actualUser.getName());
     }
@@ -78,37 +85,54 @@ public class InmemoryUserRepositoryServiceTest {
     public void canDeleteAUser() {
         addSomeUsers();
 
-        userDaoService.remove(1);
+        userRepository.remove(2);
 
-        assertEquals(2, userDaoService.size());
-        assertNull(userDaoService.find(1));
+        assertEquals(3, userRepository.size());
+        assertNull(userRepository.find(2));
     }
 
     @Test
     public void shouldReturnTrueIfUserCanBeRemoved() {
-        userDaoService.save(bruce);
+        userRepository.save(bruce);
 
-        final boolean wasUserRemoved = userDaoService.remove(1);
+        final boolean wasUserRemoved = userRepository.remove(1);
 
         assertTrue(wasUserRemoved);
     }
 
     @Test
     public void shouldReturnFalseIfUserCannotBeRemoved() {
-        final boolean wasUserRemoved = userDaoService.remove(10);
+        final boolean wasUserRemoved = userRepository.remove(10);
 
         assertFalse(wasUserRemoved);
     }
 
-    private void addSomeUsers() {
-        userDaoService.save(bruce);
-        userDaoService.save(chuck);
-        userDaoService.save(charles);
+    @Test
+    public void shouldIncreaseSizeWhenAUserIsAdded() {
+        long initialSize = userRepository.size();
+
+        userRepository.save(bruce);
+
+        assertEquals(initialSize+1, userRepository.size());
     }
 
-    private Date createBirthdate(int year, int month, int day) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        return calendar.getTime();
+    @Test
+    public void shouldDecreaseSizeWhenAUserIsRemoved() {
+        userRepository.save(bruce);
+        userRepository.save(chuck);
+        userRepository.save(charles);
+        userRepository.save(einstein);
+        long initialSize = userRepository.size();
+
+        userRepository.remove(2);
+
+        assertEquals(initialSize-1, userRepository.size());
+    }
+
+    private void addSomeUsers() {
+        userRepository.save(bruce);
+        userRepository.save(chuck);
+        userRepository.save(charles);
+        userRepository.save(einstein);
     }
 }

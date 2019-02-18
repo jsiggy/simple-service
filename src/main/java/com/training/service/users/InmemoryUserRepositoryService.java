@@ -5,17 +5,21 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Component
-public class InmemoryUserRepositoryService {
+public class InmemoryUserRepositoryService implements UserRepository {
 
     private final List<User> users = new ArrayList<>();
+    private final AtomicLong counter = new AtomicLong();
 
+    @Override
     public List<User> findAll() {
         return users;
     }
 
-    public User find(int id) {
+    @Override
+    public User find(long id) {
         for (User user : users) {
             if (user.getId() == id)
                 return user;
@@ -23,19 +27,22 @@ public class InmemoryUserRepositoryService {
         return null;
     }
 
+    @Override
     public User save(User user) {
         if (user.getId() == null) {
-            user.setId(users.size() + 1);
+            user.setId(counter.incrementAndGet());
         }
         users.add(user);
         return user;
     }
 
-    public boolean remove(int id) {
+    @Override
+    public boolean remove(long id) {
         return users.removeIf(u -> u.getId() == id);
     }
 
-    public int size() {
+    @Override
+    public long size() {
         return users.size();
     }
 }

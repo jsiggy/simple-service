@@ -13,16 +13,20 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private InmemoryUserRepositoryService userService;
+    private UserRepository userRepository;
+
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("/users")
     public List<User> retrieveAllUsers() {
-        return userService.findAll();
+        return userRepository.findAll();
     }
 
     @GetMapping("/users/{id}")
-    public User retrieveUser(@PathVariable int id) {
-        final User user = userService.find(id);
+    public User retrieveUser(@PathVariable long id) {
+        final User user = userRepository.find(id);
         if (user == null)
             throw new UserNotFoundException("id: " + id);
         return user;
@@ -30,7 +34,7 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
-        final User newUser = userService.save(user);
+        final User newUser = userRepository.save(user);
 
         final URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -40,8 +44,8 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable int id) {
-        final boolean removed = userService.remove(id);
+    public void deleteUser(@PathVariable long id) {
+        final boolean removed = userRepository.remove(id);
         if (!removed)
             throw new UserNotFoundException("id: " + id);
     }
