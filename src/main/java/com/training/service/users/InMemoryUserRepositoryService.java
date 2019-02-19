@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component
-public class InmemoryUserRepositoryService implements UserRepository {
+public class InMemoryUserRepositoryService implements UserRepository {
 
     private final List<User> users = new ArrayList<>();
     private final AtomicLong counter = new AtomicLong();

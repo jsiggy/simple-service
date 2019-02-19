@@ -41,7 +41,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void retrieveAllShouldUseUserRepositoryFindAll() {
+    public void shouldUseRepositoryToFetchAll() {
         when(userRepository.findAll()).thenReturn(Arrays.asList(newton, einstein));
 
         userController.retrieveAllUsers();
@@ -50,7 +50,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void retrieveAllShouldGetAllUsersInTheRepository() {
+    public void canGetListOfUsers() {
         when(userRepository.findAll()).thenReturn(Arrays.asList(newton, einstein));
 
         final List<User> users = userController.retrieveAllUsers();
@@ -59,7 +59,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void retrieveAllShouldNotFailWhenZeroUsers() {
+    public void shouldSucceedWhenNoUsers() {
 
         final List<User> users = userController.retrieveAllUsers();
 
@@ -67,7 +67,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void retrieveUserShouldUseUserRepositoryFind() {
+    public void shouldUseRepositoryToFindOneUser() {
         long id = newton.getId();
         when(userRepository.find(id)).thenReturn(newton);
 
@@ -77,7 +77,7 @@ public class UserControllerTest {
     }
 
     @Test(expected = UserNotFoundException.class)
-    public void shouldThrowUserNotFoundWhenNoSuchUserId() {
+    public void shouldThrowUserNotFoundWhenFetchingUserThatDoesNotExist() {
         long id = newton.getId();
         when(userRepository.find(id)).thenReturn(null);
 
@@ -85,7 +85,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldAskUserRepoToSaveAUser() throws Exception {
+    public void shouldUseRepoToSaveAUser() throws Exception {
         when(userRepository.save(newton)).thenReturn(newton);
         when(locationUriCreator.getUserLocationUri(newton)).thenReturn(new URI("http://localhost"));
 
@@ -95,7 +95,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldUseUserRepositoryToDeleteAnExistingUser() {
+    public void shouldUseRepoToDeleteAUser() {
         long id = newton.getId();
         when(userRepository.remove(id)).thenReturn(true);
 
@@ -105,7 +105,7 @@ public class UserControllerTest {
     }
 
     @Test(expected = UserNotFoundException.class)
-    public void shouldThrowUserNotFoundWhenTryingtoDeleteANonExistingUser() {
+    public void shouldThrowUserNotFoundWhenDeletingUserThatDoesNotExist() {
         long id = newton.getId();
         when(userRepository.remove(id)).thenReturn(false);
 

@@ -9,7 +9,7 @@ import static com.training.service.users.UserTestUtil.createBirthdate;
 import static java.util.Calendar.*;
 import static org.junit.Assert.*;
 
-public class InmemoryUserRepositoryServiceTest {
+public class InMemoryUserRepositoryServiceTest {
 
     private UserRepository userRepository;
     private User bruce;
@@ -28,7 +28,7 @@ public class InmemoryUserRepositoryServiceTest {
         einstein = new User.UserBuilder().name("Albert Einstein")
                 .birthdate(createBirthdate(1879, MARCH, 14)).build();
 
-        userRepository = new InmemoryUserRepositoryService();
+        userRepository = new InMemoryUserRepositoryService();
     }
 
     @Test
