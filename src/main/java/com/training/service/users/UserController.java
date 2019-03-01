@@ -44,6 +44,7 @@ public class UserController {
         return ResponseEntity.created(location).build();
     }
 
+//    @Secured("admin")
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable long id) {
         final boolean removed = userRepository.remove(id);

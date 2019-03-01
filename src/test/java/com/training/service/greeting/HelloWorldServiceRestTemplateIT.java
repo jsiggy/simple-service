@@ -16,7 +16,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class HelloWorldServiceTest {
+public class HelloWorldServiceRestTemplateIT {
     @LocalServerPort
     private int port;
 
