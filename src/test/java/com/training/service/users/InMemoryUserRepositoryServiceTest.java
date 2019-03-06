@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class InMemoryUserRepositoryServiceTest {
 
-    private UserRepository userRepository;
+    private InMemoryUserRepositoryService userRepository;
     private User bruce;
     private User chuck;
     private User charles;
@@ -127,6 +127,18 @@ public class InMemoryUserRepositoryServiceTest {
         userRepository.remove(2);
 
         assertEquals(initialSize-1, userRepository.size());
+    }
+
+    @Test
+    public void shouldBeAbleToRemoveAllListItems() {
+        userRepository.save(bruce);
+        userRepository.save(chuck);
+        userRepository.save(charles);
+        userRepository.save(einstein);
+
+        userRepository.removeAll();
+
+        assertEquals(0, userRepository.size());
     }
 
     private void addSomeUsers() {

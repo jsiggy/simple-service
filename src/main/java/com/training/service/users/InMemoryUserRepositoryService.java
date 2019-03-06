@@ -45,4 +45,8 @@ public class InMemoryUserRepositoryService implements UserRepository {
     public long size() {
         return users.size();
     }
+
+    void removeAll() {
+        users.clear();
+    }
 }
